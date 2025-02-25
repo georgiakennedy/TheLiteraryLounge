@@ -7,10 +7,12 @@ import RegisterPage from './pages/RegisterPage';
 import ProfilePage from './pages/ProfilePage';
 import CreatePostPage from './pages/CreatePostPage';
 
+import Navbar from './components/navbar';
+
 function App() {
   return (
     <BrowserRouter>
-      {/* Navbar */}
+      <Navbar />
       <Routes>
         <Route path="/" element={<HomePage />} />
         <Route path="/login" element={<LoginPage />} />
