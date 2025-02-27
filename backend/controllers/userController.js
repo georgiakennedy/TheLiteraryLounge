@@ -41,16 +41,21 @@ exports.loginUser = async (req, res) => {
     const user = await User.findOne({
       $or: [{ email: credential }, { username: credential }]
     });
-    if (!user) return res.status(400).json({ message: 'Invalid credentials' });
+    if (!user) return res.status(400).json({ message: 'Incorrect username or password' });
     const isMatch = await bcrypt.compare(password, user.password);
-    if (!isMatch) return res.status(400).json({ message: 'Invalid credentials' });
+    if (!isMatch) return res.status(400).json({ message: 'Incorrect username or password' });
     const payload = { userId: user._id, username: user.username };
     const token = jwt.sign(payload, process.env.JWT_SECRET, { expiresIn: '1h' });
-    res.status(200).json({ message: 'Login successful', token, user: { username: user.username, email: user.email } });
+        res.status(200).json({ 
+      message: 'Login successful', 
+      token, 
+      user: { userId: user._id, username: user.username, email: user.email }
+    });
   } catch (error) {
     res.status(500).json({ message: 'Error logging in', error: error.message });
   }
 };
+
 
 exports.updateUser = async (req, res) => {
   try {

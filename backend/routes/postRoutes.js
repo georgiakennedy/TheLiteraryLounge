@@ -16,6 +16,7 @@ const allowedCategories = ['tips & tricks', 'discussions', 'get inspired', 'reso
 
 router.post(
   '/',
+  auth,
   [
     body('title').notEmpty().withMessage('Title is required'),
     body('category')
