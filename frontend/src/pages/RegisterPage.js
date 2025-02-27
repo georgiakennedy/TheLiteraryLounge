@@ -1,6 +1,7 @@
-import React, { useState } from 'react';
+import React, { useState, useContext } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
 import api from '../services/api';
+import { AuthContext } from '../context/AuthContext';
 
 const RegisterPage = () => {
   const [username, setUsername] = useState('');
@@ -10,20 +11,25 @@ const RegisterPage = () => {
   const [error, setError] = useState(null);
   const [message, setMessage] = useState(null);
   const navigate = useNavigate();
+  const { login } = useContext(AuthContext);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      const response = await api.post('/users', {
-        username,
-        email,
-        password,
-        confirmPassword,
-      });
-      setMessage(response.data.message);
-      setError(null);
-      // Optionally redirect to login after registration
-      navigate('/login');
+      await api.post('/users', { username, email, password, confirmPassword });
+      
+      const loginResponse = await api.post('/users/login', { credential: email, password });
+      if (loginResponse.data.token) {
+        login(
+          { 
+            userId: loginResponse.data.user.userId, 
+            username: loginResponse.data.user.username, 
+            email: loginResponse.data.user.email 
+          },
+          loginResponse.data.token
+        );
+        navigate('/profile');
+      }
     } catch (err) {
       if (err.response && err.response.data && err.response.data.errors) {
         setError(err.response.data.errors.join(', '));
@@ -75,8 +81,7 @@ const RegisterPage = () => {
         <button type="submit">Register</button>
       </form>
       <p>
-        Already have an account?{' '}
-        <Link to="/login">Log in here!</Link>
+        Already have an account? <Link to="/login">Log in here!</Link>
       </p>
     </div>
   );

@@ -1,7 +1,11 @@
-import React from 'react';
-import { Link } from 'react-router-dom';
+import React, { useContext } from 'react';
+import { Link, useLocation } from 'react-router-dom';
+import { AuthContext } from '../context/AuthContext';
 
 const Navbar = () => {
+  const { user, logout } = useContext(AuthContext);
+  const location = useLocation();
+
   const navStyle = {
     display: 'flex',
     gap: '1rem',
@@ -12,9 +16,21 @@ const Navbar = () => {
   return (
     <nav style={navStyle}>
       <Link to="/">Home</Link>
-      <Link to="/login">Login</Link>
-      <Link to="/profile">Profile</Link>
-      <Link to="/create-post">Create Post</Link>
+      {user ? (
+        <>
+          <Link to={`/profile/${user.userId}`}>Profile</Link>
+          <Link to="/create-post">Create Post</Link>
+          <button onClick={logout}>Logout</button>
+        </>
+      ) : (
+        <>
+          {location.pathname === '/register' ? (
+            <Link to="/register">Register</Link>
+          ) : (
+            <Link to="/login">Login</Link>
+          )}
+        </>
+      )}
     </nav>
   );
 };

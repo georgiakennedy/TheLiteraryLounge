@@ -1,25 +1,31 @@
-import React, { useState } from 'react';
+import React, { useState, useContext } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
 import api from '../services/api';
+import { AuthContext } from '../context/AuthContext';
 
 const LoginPage = () => {
   const [credential, setCredential] = useState('');
   const [password, setPassword] = useState('');
   const [error, setError] = useState(null);
   const navigate = useNavigate();
+  const { login } = useContext(AuthContext);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
       const response = await api.post('/users/login', { credential, password });
       if (response.data.token) {
-        localStorage.setItem('token', response.data.token);
+        login(
+          { userId: response.data.user.userId, username: response.data.user.username, email: response.data.user.email },
+          response.data.token
+        );
         navigate('/');
       }
     } catch (err) {
       setError(err.response?.data?.message || 'Login failed. Please try again.');
     }
   };
+  
 
   return (
     <div>
@@ -45,8 +51,7 @@ const LoginPage = () => {
         <button type="submit">Login</button>
       </form>
       <p>
-        Don't have an account?{' '}
-        <Link to="/register">Sign up here!</Link>
+        Don't have an account? <Link to="/register">Sign up here!</Link>
       </p>
     </div>
   );
