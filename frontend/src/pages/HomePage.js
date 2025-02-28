@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import { Link } from 'react-router-dom';
 import api from '../services/api';
 
 const HomePage = () => {
@@ -65,32 +66,38 @@ const HomePage = () => {
 
       <div>
         {filteredPosts.map((post) => (
-          <div
+          <Link
+            to={`/post/${post._id}`}
             key={post._id}
-            style={{
-              border: '1px solid #ccc',
-              padding: '1rem',
-              marginBottom: '1rem',
-              borderRadius: '4px'
-            }}
+            style={{ textDecoration: 'none', color: 'inherit' }}
           >
-            <h2>{post.title}</h2>
-            <p>
-              <strong>By:</strong> {post.author?.username || 'Unknown'}
-            </p>
-            <p>
-              <strong>Date:</strong> {new Date(post.createdAt).toLocaleString()}
-            </p>
-            <p>
-              <strong>Category:</strong> {post.category}
-            </p>
-            <p>
-              <strong>Likes:</strong> {post.likes}
-            </p>
-            <p>
-              <strong>Comments:</strong> {post.comments ? post.comments.length : 0}
-            </p>
-          </div>
+            <div
+              style={{
+                border: '1px solid #ccc',
+                padding: '1rem',
+                marginBottom: '1rem',
+                borderRadius: '4px',
+                cursor: 'pointer'
+              }}
+            >
+              <h2>{post.title}</h2>
+              <p>
+                <strong>By:</strong> {post.author?.username || 'Unknown'}
+              </p>
+              <p>
+                <strong>Date:</strong> {new Date(post.createdAt).toLocaleString()}
+              </p>
+              <p>
+                <strong>Category:</strong> {post.category}
+              </p>
+              <p>
+                <strong>Likes:</strong> {post.likes}
+              </p>
+              <p>
+                <strong>Comments:</strong> {post.comments ? post.comments.length : 0}
+              </p>
+            </div>
+          </Link>
         ))}
       </div>
     </div>

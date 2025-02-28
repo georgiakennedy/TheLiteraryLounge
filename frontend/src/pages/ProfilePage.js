@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useContext } from 'react';
-import { useParams } from 'react-router-dom';
+import { useParams, Link } from 'react-router-dom';
 import api from '../services/api';
 import { AuthContext } from '../context/AuthContext';
 
@@ -44,7 +44,9 @@ const ProfilePage = () => {
   return (
     <div style={{ padding: '1rem' }}>
       <h1>{profile.username}'s Profile</h1>
-      <p><strong>Email:</strong> {profile.email}</p>
+      <p>
+        <strong>Email:</strong> {profile.email}
+      </p>
       {profile.bio && <p><strong>Bio:</strong> {profile.bio}</p>}
       {profile.profilePicture && (
         <img
@@ -58,12 +60,30 @@ const ProfilePage = () => {
         <p>No posts available.</p>
       ) : (
         posts.map((post) => (
-          <div key={post._id} style={{ border: '1px solid #ccc', padding: '1rem', marginBottom: '1rem', borderRadius: '4px' }}>
-            <h3>{post.title}</h3>
-            <p>{post.content.substring(0, 100)}...</p>
-            <p><strong>Date:</strong> {new Date(post.createdAt).toLocaleString()}</p>
-            <p><strong>Category:</strong> {post.category}</p>
-          </div>
+          <Link 
+            to={`/post/${post._id}`} 
+            key={post._id} 
+            style={{ textDecoration: 'none', color: 'inherit' }}
+          >
+            <div
+              style={{
+                border: '1px solid #ccc',
+                padding: '1rem',
+                marginBottom: '1rem',
+                borderRadius: '4px',
+                cursor: 'pointer'
+              }}
+            >
+              <h3>{post.title}</h3>
+              <p>{post.content.substring(0, 100)}...</p>
+              <p>
+                <strong>Date:</strong> {new Date(post.createdAt).toLocaleString()}
+              </p>
+              <p>
+                <strong>Category:</strong> {post.category}
+              </p>
+            </div>
+          </Link>
         ))
       )}
     </div>
