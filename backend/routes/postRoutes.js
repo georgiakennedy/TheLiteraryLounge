@@ -1,7 +1,7 @@
 const express = require('express');
 const router = express.Router();
 const { body, validationResult } = require('express-validator');
-const { createPost, getPosts, updatePost, deletePost, likePost, unlikePost } = require('../controllers/postController');
+const { createPost, getPosts, getPostById, updatePost, deletePost, toggleLikePost } = require('../controllers/postController');
 const auth = require('../middleware/auth');
 
 const validate = (req, res, next) => {
@@ -28,6 +28,8 @@ router.post(
   createPost
 );
 
+router.get('/:id', getPostById);
+
 router.put(
   '/:id',
   [
@@ -44,7 +46,6 @@ router.put(
 
 router.get('/', getPosts);
 router.delete('/:id', deletePost);
-router.post('/:id/like', auth, likePost);
-router.post('/:id/unlike', auth, unlikePost);
+router.post('/:id/toggle-like', auth, toggleLikePost);
 
 module.exports = router;

@@ -13,6 +13,31 @@ exports.createPost = async (req, res) => {
   }
 };
 
+exports.getPostById = async (req, res) => {
+  try {
+    const { id } = req.params;
+    if (!mongoose.Types.ObjectId.isValid(id)) {
+      return res.status(404).json({ message: 'Post not found' });
+    }
+    const post = await Post.findById(id)
+      .populate('author', 'username email')
+      .populate({
+        path: 'comments',
+        populate: {
+          path: 'author',
+          select: 'username'
+        }
+      });
+    if (!post) {
+      return res.status(404).json({ message: 'Post not found' });
+    }
+    res.status(200).json(post);
+  } catch (error) {
+    res.status(500).json({ message: 'Error fetching post', error: error.message });
+  }
+};
+
+
 exports.getPosts = async (req, res) => {
   try {
     const posts = await Post.find().populate('author', 'username email');
@@ -39,67 +64,44 @@ exports.updatePost = async (req, res) => {
 };
 
 exports.deletePost = async (req, res) => {
-    try {
-      const { id } = req.params;
-      
-      if (!mongoose.Types.ObjectId.isValid(id)) {
-        return res.status(404).json({ message: 'Posts not found' });
-      }
-      
-      const deletedPost = await Post.findByIdAndDelete(id);
-      if (!deletedPost) return res.status(404).json({ message: 'Posts not found' });
-      res.status(200).json({ message: 'Post deleted', post: deletedPost });
-    } catch (error) {
-      res.status(500).json({ message: 'Error deleting post', error: error.message });
+  try {
+    const { id } = req.params;
+    if (!mongoose.Types.ObjectId.isValid(id)) {
+      return res.status(404).json({ message: 'Posts not found' });
     }
-  };
+    const deletedPost = await Post.findByIdAndDelete(id);
+    if (!deletedPost) return res.status(404).json({ message: 'Posts not found' });
+    res.status(200).json({ message: 'Post deleted', post: deletedPost });
+  } catch (error) {
+    res.status(500).json({ message: 'Error deleting post', error: error.message });
+  }
+};
 
-exports.likePost = async (req, res) => {
-    try {
-      const { id } = req.params;
-      
-      if (!mongoose.Types.ObjectId.isValid(id)) {
-        return res.status(404).json({ message: 'Post not found' });
-      }
-      
-      const updatedPost = await Post.findByIdAndUpdate(
-        id,
-        { $inc: { likes: 1 } },
-        { new: true }
-      );
-      
-      if (!updatedPost) {
-        return res.status(404).json({ message: 'Post not found' });
-      }
-      
-      res.status(200).json({ message: 'Post liked', post: updatedPost });
-    } catch (error) {
-      res.status(500).json({ message: 'Error liking post', error: error.message });
+exports.toggleLikePost = async (req, res) => {
+  try {
+    const { id } = req.params;
+    const userId = req.user.userId;
+    if (!mongoose.Types.ObjectId.isValid(id)) {
+      return res.status(404).json({ message: 'Post not found' });
     }
-  };
-  
-  exports.unlikePost = async (req, res) => {
-    try {
-      const { id } = req.params;
-      
-      if (!mongoose.Types.ObjectId.isValid(id)) {
-        return res.status(404).json({ message: 'Post not found' });
-      }
-      
-      const post = await Post.findById(id);
-      if (!post) {
-        return res.status(404).json({ message: 'Post not found' });
-      }
-      
-      if (post.likes <= 0) {
-        return res.status(400).json({ message: 'Post has no likes to remove' });
-      }
-      
+    const post = await Post.findById(id);
+    if (!post) {
+      return res.status(404).json({ message: 'Post not found' });
+    }
+    const index = post.likedBy.findIndex((uid) => uid.toString() === userId);
+    let message;
+    if (index === -1) {
+      post.likedBy.push(userId);
+      post.likes += 1;
+      message = 'Post liked';
+    } else {
+      post.likedBy.splice(index, 1);
       post.likes -= 1;
-      await post.save();
-      
-      res.status(200).json({ message: 'Post unliked', post });
-    } catch (error) {
-      res.status(500).json({ message: 'Error unliking post', error: error.message });
+      message = 'Post unliked';
     }
-  };
+    await post.save();
+    res.status(200).json({ message, post });
+  } catch (error) {
+    res.status(500).json({ message: 'Error toggling like', error: error.message });
+  }
+};
