@@ -56,7 +56,7 @@ const ViewPostPage = () => {
   if (!post) return <p>Post not found.</p>;
 
   return (
-    <div style={{ padding: '1rem' }}>
+    <div style={{ padding: '1rem', paddingBottom: '150px' }}>
       <h1>{post.title}</h1>
       <p>{post.content}</p>
       <p>
@@ -102,19 +102,28 @@ const ViewPostPage = () => {
         <p>No comments yet.</p>
       )}
 
-      <form onSubmit={handleCommentSubmit} style={{ marginTop: '1rem' }}>
-        <div>
-          <label>Add a Comment:</label>
+      <div style={{
+        position: 'fixed',
+        bottom: 0,
+        left: 0,
+        right: 0,
+        backgroundColor: '#fff',
+        padding: '1rem',
+        borderTop: '1px solid #ccc',
+        zIndex: 1000
+      }}>
+        <form onSubmit={handleCommentSubmit}>
           <textarea
+            placeholder="Add a Comment..."
             value={newComment}
             onChange={(e) => setNewComment(e.target.value)}
             rows={3}
-            style={{ width: '100%' }}
+            style={{ width: '100%', padding: '0.5rem' }}
           />
-        </div>
-        <button type="submit">Submit Comment</button>
-        {commentError && <p style={{ color: 'red' }}>{commentError}</p>}
-      </form>
+          <button type="submit" style={{ marginTop: '0.5rem' }}>Reply</button>
+          {commentError && <p style={{ color: 'red' }}>{commentError}</p>}
+        </form>
+      </div>
     </div>
   );
 };

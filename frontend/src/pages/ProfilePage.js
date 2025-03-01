@@ -24,7 +24,10 @@ const ProfilePage = () => {
         setLoading(true);
         const response = await api.get(`/users/profile/${profileId}`);
         setProfile(response.data.user);
-        setPosts(response.data.posts);
+        const sortedPosts = response.data.posts.sort(
+          (a, b) => new Date(b.createdAt) - new Date(a.createdAt)
+        );
+        setPosts(sortedPosts);
         setError(null);
       } catch (err) {
         console.error("Error fetching profile:", err);
@@ -39,14 +42,12 @@ const ProfilePage = () => {
 
   if (loading) return <p>Loading profile...</p>;
   if (error) return <p style={{ color: 'red' }}>{error}</p>;
-  if (!profile) return <p>No profile found</p>;
+  if (!profile) return <p>No profile found.</p>;
 
   return (
     <div style={{ padding: '1rem' }}>
       <h1>{profile.username}'s Profile</h1>
-      <p>
-        <strong>Email:</strong> {profile.email}
-      </p>
+      <p><strong>Email:</strong> {profile.email}</p>
       {profile.bio && <p><strong>Bio:</strong> {profile.bio}</p>}
       {profile.profilePicture && (
         <img
@@ -60,9 +61,9 @@ const ProfilePage = () => {
         <p>No posts available.</p>
       ) : (
         posts.map((post) => (
-          <Link 
-            to={`/post/${post._id}`} 
-            key={post._id} 
+          <Link
+            to={`/post/${post._id}`}
+            key={post._id}
             style={{ textDecoration: 'none', color: 'inherit' }}
           >
             <div
