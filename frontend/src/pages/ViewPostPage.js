@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useCallback } from 'react';
+import React, { useState, useEffect, useCallback, useRef } from 'react';
 import { useParams, Link } from 'react-router-dom';
 import api from '../services/api';
 
@@ -9,6 +9,7 @@ const ViewPostPage = () => {
   const [error, setError] = useState(null);
   const [newComment, setNewComment] = useState('');
   const [commentError, setCommentError] = useState(null);
+  const commentsEndRef = useRef(null);
 
   const fetchPost = useCallback(async () => {
     try {
@@ -44,12 +45,17 @@ const ViewPostPage = () => {
       await api.post('/comments', { content: newComment, post: id });
       setNewComment('');
       setCommentError(null);
-      fetchPost();
+      await fetchPost();
+  
+      setTimeout(() => {
+        window.scrollTo({ top: document.body.scrollHeight, behavior: 'smooth' });
+      }, 100);
     } catch (err) {
       console.error("Error submitting comment:", err);
       setCommentError(err.response?.data?.message || 'Error submitting comment');
     }
   };
+  
 
   if (loading) return <p>Loading post...</p>;
   if (error) return <p style={{ color: 'red' }}>{error}</p>;
@@ -101,6 +107,8 @@ const ViewPostPage = () => {
       ) : (
         <p>No comments yet.</p>
       )}
+
+      <div ref={commentsEndRef} />
 
       <div style={{
         position: 'fixed',
