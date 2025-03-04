@@ -57,16 +57,17 @@ exports.loginUser = async (req, res) => {
 };
 
 
-exports.updateUser = async (req, res) => {
+exports.updateUserProfile = async (req, res) => {
   try {
     const { id } = req.params;
-    const { username, email, bio, profilePicture } = req.body;
-    const updatedUser = await User.findByIdAndUpdate(
-      id,
-      { username, email, bio, profilePicture },
-      { new: true, runValidators: true }
-    );
-    if (!updatedUser) return res.status(404).json({ message: 'User not found' });
+    const updateData = req.body;
+    if (req.file) {
+      updateData.profilePicture = req.file.path;
+    }
+    const updatedUser = await User.findByIdAndUpdate(id, updateData, { new: true, runValidators: true });
+    if (!updatedUser) {
+      return res.status(404).json({ message: 'User not found' });
+    }
     res.status(200).json({ message: 'User updated', user: updatedUser });
   } catch (error) {
     res.status(500).json({ message: 'Error updating user', error: error.message });
@@ -143,3 +144,4 @@ exports.getUserProfile = async (req, res) => {
     res.status(500).json({ message: 'Error fetching user profile', error: error.message });
   }
 };
+

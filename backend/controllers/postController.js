@@ -20,12 +20,12 @@ exports.getPostById = async (req, res) => {
       return res.status(404).json({ message: 'Post not found' });
     }
     const post = await Post.findById(id)
-      .populate('author', 'username email')
+      .populate('author', 'username email profilePicture')
       .populate({
         path: 'comments',
         populate: {
           path: 'author',
-          select: 'username'
+          select: 'username profilePicture'
         }
       });
     if (!post) {
@@ -37,10 +37,9 @@ exports.getPostById = async (req, res) => {
   }
 };
 
-
 exports.getPosts = async (req, res) => {
   try {
-    const posts = await Post.find().populate('author', 'username email');
+    const posts = await Post.find().populate('author', 'username email profilePicture');
     res.status(200).json(posts);
   } catch (error) {
     res.status(500).json({ message: 'Error fetching posts', error: error.message });

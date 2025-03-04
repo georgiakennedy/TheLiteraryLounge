@@ -1,11 +1,11 @@
 const express = require('express');
 const router = express.Router();
-const { body, validationResult } = require('express-validator');
-const {createUser, getUsers, loginUser, updateUser, deleteUser, changePassword, getUserProfile} = require('../controllers/userController');
+const { createUser, getUsers, loginUser, deleteUser, changePassword, getUserProfile, updateUserProfile } = require('../controllers/userController');
 const auth = require('../middleware/auth');
+const upload = require('../middleware/upload');
 
 const validate = (req, res, next) => {
-  const errors = validationResult(req);
+  const errors = require('express-validator').validationResult(req);
   if (!errors.isEmpty()) {
     return res.status(400).json({ errors: errors.array().map(err => err.msg) });
   }
@@ -15,12 +15,12 @@ const validate = (req, res, next) => {
 router.post(
   '/',
   [
-    body('username').notEmpty().withMessage('Username is required'),
-    body('email').isEmail().withMessage('A valid email is required'),
-    body('password')
+    require('express-validator').body('username').notEmpty().withMessage('Username is required'),
+    require('express-validator').body('email').isEmail().withMessage('A valid email is required'),
+    require('express-validator').body('password')
       .isLength({ min: 8 }).withMessage('Password must be at least 8 characters long')
       .matches(/[!@#$%^&*(),.?":{}|<>]/).withMessage('Password must contain at least one special symbol'),
-    body('confirmPassword')
+    require('express-validator').body('confirmPassword')
       .notEmpty().withMessage('Confirm password is required')
       .custom((value, { req }) => {
         if (value !== req.body.password) {
@@ -36,8 +36,8 @@ router.post(
 router.post(
   '/login',
   [
-    body('credential').notEmpty().withMessage('Credential (username or email) is required'),
-    body('password').notEmpty().withMessage('Password is required')
+    require('express-validator').body('credential').notEmpty().withMessage('Credential (username or email) is required'),
+    require('express-validator').body('password').notEmpty().withMessage('Password is required')
   ],
   validate,
   loginUser
@@ -47,11 +47,11 @@ router.put(
   '/change-password',
   auth,
   [
-    body('currentPassword').notEmpty().withMessage('Current password is required'),
-    body('newPassword')
+    require('express-validator').body('currentPassword').notEmpty().withMessage('Current password is required'),
+    require('express-validator').body('newPassword')
       .isLength({ min: 8 }).withMessage('New password must be at least 8 characters long')
       .matches(/[!@#$%^&*(),.?":{}|<>]/).withMessage('New password must contain at least one special symbol'),
-    body('confirmNewPassword')
+    require('express-validator').body('confirmNewPassword')
       .notEmpty().withMessage('Confirm new password is required')
       .custom((value, { req }) => {
         if (value !== req.body.newPassword) {
@@ -65,21 +65,9 @@ router.put(
 );
 
 router.get('/profile/:id', getUserProfile);
-
-router.put(
-  '/:id',
-  [
-    body('username').optional().notEmpty().withMessage('Username cannot be empty'),
-    body('email').optional().isEmail().withMessage('Please provide a valid email'),
-    body('bio').optional(),
-    body('profilePicture').optional()
-  ],
-  validate,
-  updateUser
-);
+router.put('/profile/:id', auth, upload.single('profilePicture'), updateUserProfile);
 
 router.delete('/:id', deleteUser);
-
 router.get('/', getUsers);
 
 module.exports = router;
