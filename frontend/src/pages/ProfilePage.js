@@ -46,47 +46,85 @@ const ProfilePage = () => {
 
   return (
     <div style={{ padding: '1rem' }}>
-      <h1>{profile.username}'s Profile</h1>
+      <div style={{ display: 'flex', alignItems: 'center', marginBottom: '1rem' }}>
+        {profile.profilePicture && (
+          <img
+            src={`http://localhost:5001/${profile.profilePicture}`}
+            alt={`${profile.username}'s profile`}
+            style={{
+              width: '150px',
+              height: '150px',
+              objectFit: 'cover',
+              borderRadius: '50%',
+              marginRight: '1rem'
+            }}
+          />
+        )}
+        <h1>{profile.username}'s Profile</h1>
+      </div>
+      
       <p><strong>Email:</strong> {profile.email}</p>
       {profile.bio && <p><strong>Bio:</strong> {profile.bio}</p>}
-      {profile.profilePicture && (
-        <img
-          src={profile.profilePicture}
-          alt={`${profile.username}'s profile`}
-          style={{ width: '150px', height: '150px', objectFit: 'cover', borderRadius: '50%' }}
-        />
+      
+      {user && profile && user.userId === profile._id.toString() && (
+        <Link to="/edit-profile" style={{ textDecoration: 'none', color: 'blue', fontWeight: 'bold' }}>
+          Edit Profile
+        </Link>
       )}
+      
       <h2>Posts by {profile.username}</h2>
       {posts.length === 0 ? (
-        <p>No posts available.</p>
-      ) : (
-        posts.map((post) => (
-          <Link
-            to={`/post/${post._id}`}
-            key={post._id}
-            style={{ textDecoration: 'none', color: 'inherit' }}
-          >
-            <div
+  <p>No posts available.</p>
+) : (
+  posts.map((post) => (
+    <Link
+      to={`/post/${post._id}`}
+      key={post._id}
+      style={{ textDecoration: 'none', color: 'inherit' }}
+    >
+      <div
+        style={{
+          border: '1px solid #ccc',
+          padding: '1rem',
+          marginBottom: '1rem',
+          borderRadius: '4px',
+          cursor: 'pointer'
+        }}
+      >
+        <div style={{ display: 'flex', alignItems: 'center', marginBottom: '0.5rem' }}>
+          {profile.profilePicture && (
+            <img
+              src={`http://localhost:5001/${profile.profilePicture}`}
+              alt={`${profile.username}'s profile`}
               style={{
-                border: '1px solid #ccc',
-                padding: '1rem',
-                marginBottom: '1rem',
-                borderRadius: '4px',
-                cursor: 'pointer'
+                width: '40px',
+                height: '40px',
+                borderRadius: '50%',
+                objectFit: 'cover',
+                marginRight: '0.5rem'
               }}
-            >
-              <h3>{post.title}</h3>
-              <p>{post.content.substring(0, 100)}...</p>
-              <p>
-                <strong>Date:</strong> {new Date(post.createdAt).toLocaleString()}
-              </p>
-              <p>
-                <strong>Category:</strong> {post.category}
-              </p>
-            </div>
-          </Link>
-        ))
-      )}
+            />
+          )}
+          <span style={{ fontWeight: 'bold' }}>{profile.username}</span>
+        </div>
+        <h3>{post.title}</h3>
+        <p>
+          {post.content.length > 100
+            ? post.content.substring(0, 100) + '...'
+            : post.content}
+        </p>
+        <p>
+          <strong>Date:</strong> {new Date(post.createdAt).toLocaleString()}
+        </p>
+        <p>
+          <strong>Category:</strong> {post.category}
+        </p>
+      </div>
+    </Link>
+  ))
+)}
+
+
     </div>
   );
 };

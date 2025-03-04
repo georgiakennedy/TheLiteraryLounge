@@ -80,9 +80,29 @@ const HomePage = () => {
                 cursor: 'pointer'
               }}
             >
+              <div style={{ display: 'flex', alignItems: 'center', marginBottom: '0.5rem' }}>
+                {post.author && post.author.profilePicture && (
+                  <img
+                    src={`http://localhost:5001/${post.author.profilePicture}`}
+                    alt={`${post.author.username}'s profile`}
+                    style={{
+                      width: '40px',
+                      height: '40px',
+                      borderRadius: '50%',
+                      objectFit: 'cover',
+                      marginRight: '0.5rem'
+                    }}
+                  />
+                )}
+                <span style={{ fontWeight: 'bold' }}>
+                  {post.author ? post.author.username : 'Unknown'}
+                </span>
+              </div>
               <h2>{post.title}</h2>
               <p>
-                <strong>By:</strong> {post.author?.username || 'Unknown'}
+                {post.content.length > 100
+                  ? post.content.substring(0, 100) + '...'
+                  : post.content}
               </p>
               <p>
                 <strong>Date:</strong> {new Date(post.createdAt).toLocaleString()}

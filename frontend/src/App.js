@@ -7,6 +7,7 @@ import RegisterPage from './pages/RegisterPage';
 import ProfilePage from './pages/ProfilePage';
 import CreatePostPage from './pages/CreatePostPage';
 import ViewPostPage from './pages/ViewPostPage'; 
+import EditProfilePage from './pages/EditProfilePage';
 
 import Navbar from './components/navbar';
 
@@ -21,6 +22,7 @@ function App() {
         <Route path="/profile/:id?" element={<ProfilePage />} />
         <Route path="/create-post" element={<CreatePostPage />} />
         <Route path="/post/:id" element={<ViewPostPage />} />
+        <Route path="/edit-profile" element={<EditProfilePage />} />
       </Routes>
     </BrowserRouter>
   );

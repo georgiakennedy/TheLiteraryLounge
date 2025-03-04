@@ -98,20 +98,34 @@ const ViewPostPage = () => {
 
   return (
     <div style={{ padding: '1rem', paddingBottom: '150px' }}>
+      <div style={{ display: 'flex', alignItems: 'center', marginBottom: '1rem' }}>
+        {post.author && post.author.profilePicture && (
+          <img
+            src={`http://localhost:5001/${post.author.profilePicture}`}
+            alt={`${post.author.username}'s profile`}
+            style={{
+              width: '50px',
+              height: '50px',
+              objectFit: 'cover',
+              borderRadius: '50%',
+              marginRight: '1rem'
+            }}
+          />
+        )}
+        {post.author ? (
+          <h2>{post.author.username}</h2>
+        ) : (
+          <h2>Unknown</h2>
+        )}
+      </div>
+      
       <h1>{post.title}</h1>
       <p>{post.content}</p>
       <p>
         <strong>Likes:</strong> {post.likes}
       </p>
       <button onClick={handleToggleLike}>Like</button>
-      <p>
-        <strong>Author:</strong>{" "}
-        {post.author ? (
-          <Link to={`/profile/${post.author._id}`}>{post.author.username}</Link>
-        ) : (
-          "Unknown"
-        )}
-      </p>
+      
       {post.author && user && post.author._id === user.userId && (
         <button 
           onClick={handleDeletePost} 
@@ -133,15 +147,30 @@ const ViewPostPage = () => {
               marginBottom: '0.5rem' 
             }}
           >
-            <p style={{ fontWeight: 'bold' }}>
-              {comment.author ? (
-                <Link to={`/profile/${comment.author._id}`} style={{ textDecoration: 'none', color: 'inherit' }}>
-                  {comment.author.username}
-                </Link>
-              ) : (
-                'Unknown'
+            <div style={{ display: 'flex', alignItems: 'center', marginBottom: '0.5rem' }}>
+              {comment.author && comment.author.profilePicture && (
+                <img
+                  src={`http://localhost:5001/${comment.author.profilePicture}`}
+                  alt={`${comment.author.username}'s profile`}
+                  style={{
+                    width: '30px',
+                    height: '30px',
+                    borderRadius: '50%',
+                    objectFit: 'cover',
+                    marginRight: '0.5rem'
+                  }}
+                />
               )}
-            </p>
+              <p style={{ fontWeight: 'bold', margin: 0 }}>
+                {comment.author ? (
+                  <Link to={`/profile/${comment.author._id}`} style={{ textDecoration: 'none', color: 'inherit' }}>
+                    {comment.author.username}
+                  </Link>
+                ) : (
+                  'Unknown'
+                )}
+              </p>
+            </div>
             <p>{comment.content}</p>
             <p>
               <strong>Posted:</strong> {new Date(comment.createdAt).toLocaleString()}

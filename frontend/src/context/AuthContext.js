@@ -14,9 +14,16 @@ export const AuthProvider = ({ children }) => {
   }, []);
 
   const login = (userData, token) => {
+    const normalizedUser = {
+      userId: userData.userId || userData._id,
+      username: userData.username,
+      email: userData.email,
+      bio: userData.bio || '',
+      profilePicture: userData.profilePicture || ''
+    };
     localStorage.setItem('token', token);
-    localStorage.setItem('user', JSON.stringify(userData));
-    setUser(userData);
+    localStorage.setItem('user', JSON.stringify(normalizedUser));
+    setUser(normalizedUser);
   };
 
   const logout = () => {
