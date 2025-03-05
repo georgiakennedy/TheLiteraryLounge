@@ -15,6 +15,7 @@ const Navbar = () => {
 
   return (
     <nav
+      className="navbar"
       style={{
         display: 'flex',
         justifyContent: 'space-between',
@@ -24,35 +25,29 @@ const Navbar = () => {
         fontFamily: 'Istok Web, sans-serif'
       }}
     >
-      <div>
+      <div className="navbar-logo">
         <NavLink to="/">
           <img src={logo} alt="Logo" style={{ height: '40px' }} />
         </NavLink>
       </div>
-      <div style={{ display: 'flex', gap: '1rem', alignItems: 'center' }}>
-        <NavLink
-          to="/"
-          className={({ isActive }) => (isActive ? 'nav-link active' : 'nav-link')}
-        >
+      <div className="navbar-links" style={{ display: 'flex', gap: '1rem', alignItems: 'center' }}>
+        <NavLink to="/" className="nav-link">
           Home
         </NavLink>
         {user ? (
           <>
-            <NavLink
-              to={`/profile/${user.userId}`}
-              className={({ isActive }) => (isActive ? 'nav-link active' : 'nav-link')}
-            >
+            <NavLink to={`/profile/${user.userId}`} className="nav-link">
               Profile
+            </NavLink>
+            <NavLink to="/create-post" className="nav-link">
+              Create Post
             </NavLink>
             <button onClick={handleLogout} className="nav-button">
               Logout
             </button>
           </>
         ) : (
-          <NavLink
-            to="/login"
-            className={({ isActive }) => (isActive ? 'nav-link active' : 'nav-link')}
-          >
+          <NavLink to="/login" className="nav-link">
             Login
           </NavLink>
         )}

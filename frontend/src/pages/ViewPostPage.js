@@ -15,6 +15,7 @@ const ViewPostPage = () => {
   const [deleteMessage, setDeleteMessage] = useState(null);
   const [postDeleteMessage, setPostDeleteMessage] = useState(null);
   const [confirmDelete, setConfirmDelete] = useState(false);
+  const [authOverlayMessage, setAuthOverlayMessage] = useState('');
 
   const fetchPost = useCallback(async () => {
     try {
@@ -35,6 +36,11 @@ const ViewPostPage = () => {
   }, [fetchPost]);
 
   const handleToggleLike = async () => {
+    if (!user) {
+      setAuthOverlayMessage("Please login to use this feature");
+      setTimeout(() => setAuthOverlayMessage(''), 3000);
+      return;
+    }
     try {
       await api.post(`/posts/${id}/toggle-like`);
       fetchPost();
@@ -45,6 +51,11 @@ const ViewPostPage = () => {
 
   const handleCommentSubmit = async (e) => {
     e.preventDefault();
+    if (!user) {
+      setAuthOverlayMessage("Please login to use this feature");
+      setTimeout(() => setAuthOverlayMessage(''), 3000);
+      return;
+    }
     if (!newComment) return;
     try {
       await api.post('/comments', { content: newComment, post: id });
@@ -61,6 +72,11 @@ const ViewPostPage = () => {
   };
 
   const handleDeleteComment = async (commentId) => {
+    if (!user) {
+      setAuthOverlayMessage("Please login to use this feature");
+      setTimeout(() => setAuthOverlayMessage(''), 3000);
+      return;
+    }
     try {
       await api.delete(`/comments/${commentId}`);
       setDeleteMessage("Comment Deleted");
@@ -72,6 +88,11 @@ const ViewPostPage = () => {
   };
 
   const handleDeletePost = () => {
+    if (!user) {
+      setAuthOverlayMessage("Please login to use this feature");
+      setTimeout(() => setAuthOverlayMessage(''), 3000);
+      return;
+    }
     setConfirmDelete(true);
   };
 
@@ -92,16 +113,29 @@ const ViewPostPage = () => {
     setConfirmDelete(false);
   };
 
+  const handleAuthorClick = (e) => {
+    if (!user) {
+      e.preventDefault();
+      setAuthOverlayMessage("Please login to view this profile");
+      setTimeout(() => setAuthOverlayMessage(''), 3000);
+    }
+  };
+
   if (loading) return <p>Loading post...</p>;
   if (error) return <p style={{ color: 'red' }}>{error}</p>;
   if (!post) return <p>Post not found.</p>;
 
   return (
     <div style={{ padding: '1rem', paddingBottom: '150px' }}>
+      {/* Post header with author's profile picture and username */}
       <div style={{ display: 'flex', alignItems: 'center', marginBottom: '1rem' }}>
-        {post.author && post.author.profilePicture && (
+        {post.author && (
           <img
-            src={`http://localhost:5001/${post.author.profilePicture}`}
+            src={
+              post.author.profilePicture
+                ? `http://localhost:5001/${post.author.profilePicture}`
+                : '/placeholderpfp.png'
+            }
             alt={`${post.author.username}'s profile`}
             style={{
               width: '50px',
@@ -113,7 +147,15 @@ const ViewPostPage = () => {
           />
         )}
         {post.author ? (
-          <h2>{post.author.username}</h2>
+          <h2>
+            <Link
+              to={`/profile/${post.author._id}`}
+              onClick={handleAuthorClick}
+              style={{ textDecoration: 'none', color: 'inherit' }}
+            >
+              {post.author.username}
+            </Link>
+          </h2>
         ) : (
           <h2>Unknown</h2>
         )}
@@ -148,9 +190,13 @@ const ViewPostPage = () => {
             }}
           >
             <div style={{ display: 'flex', alignItems: 'center', marginBottom: '0.5rem' }}>
-              {comment.author && comment.author.profilePicture && (
+              {comment.author && (
                 <img
-                  src={`http://localhost:5001/${comment.author.profilePicture}`}
+                  src={
+                    comment.author.profilePicture
+                      ? `http://localhost:5001/${comment.author.profilePicture}`
+                      : '/placeholderpfp.png'
+                  }
                   alt={`${comment.author.username}'s profile`}
                   style={{
                     width: '30px',
@@ -163,7 +209,11 @@ const ViewPostPage = () => {
               )}
               <p style={{ fontWeight: 'bold', margin: 0 }}>
                 {comment.author ? (
-                  <Link to={`/profile/${comment.author._id}`} style={{ textDecoration: 'none', color: 'inherit' }}>
+                  <Link
+                    to={`/profile/${comment.author._id}`}
+                    onClick={handleAuthorClick}
+                    style={{ textDecoration: 'none', color: 'inherit' }}
+                  >
                     {comment.author.username}
                   </Link>
                 ) : (
@@ -222,6 +272,30 @@ const ViewPostPage = () => {
         </form>
       </div>
 
+      {authOverlayMessage && (
+        <div style={{
+          position: 'fixed',
+          top: 0,
+          left: 0,
+          width: '100%',
+          height: '100%',
+          backgroundColor: 'rgba(0, 0, 0, 0.5)',
+          display: 'flex',
+          alignItems: 'center',
+          justifyContent: 'center',
+          zIndex: 2000
+        }}>
+          <div style={{
+            backgroundColor: '#fff',
+            padding: '2rem',
+            borderRadius: '8px',
+            textAlign: 'center'
+          }}>
+            <h2>{authOverlayMessage}</h2>
+          </div>
+        </div>
+      )}
+
       {deleteMessage && (
         <div style={{
           position: 'fixed',
@@ -235,7 +309,12 @@ const ViewPostPage = () => {
           justifyContent: 'center',
           zIndex: 2000
         }}>
-          <div style={{ backgroundColor: '#fff', padding: '2rem', borderRadius: '8px', textAlign: 'center' }}>
+          <div style={{
+            backgroundColor: '#fff',
+            padding: '2rem',
+            borderRadius: '8px',
+            textAlign: 'center'
+          }}>
             <h2>{deleteMessage}</h2>
           </div>
         </div>
@@ -254,7 +333,12 @@ const ViewPostPage = () => {
           justifyContent: 'center',
           zIndex: 2000
         }}>
-          <div style={{ backgroundColor: '#fff', padding: '2rem', borderRadius: '8px', textAlign: 'center' }}>
+          <div style={{
+            backgroundColor: '#fff',
+            padding: '2rem',
+            borderRadius: '8px',
+            textAlign: 'center'
+          }}>
             <h2>{postDeleteMessage}</h2>
           </div>
         </div>
@@ -273,7 +357,12 @@ const ViewPostPage = () => {
           justifyContent: 'center',
           zIndex: 3000
         }}>
-          <div style={{ backgroundColor: '#fff', padding: '2rem', borderRadius: '8px', textAlign: 'center' }}>
+          <div style={{
+            backgroundColor: '#fff',
+            padding: '2rem',
+            borderRadius: '8px',
+            textAlign: 'center'
+          }}>
             <h2>Are you sure you want to delete this post?</h2>
             <div style={{ marginTop: '1rem' }}>
               <button 

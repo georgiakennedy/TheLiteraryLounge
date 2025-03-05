@@ -47,22 +47,23 @@ const ProfilePage = () => {
   return (
     <div style={{ padding: '1rem' }}>
       <div style={{ display: 'flex', alignItems: 'center', marginBottom: '1rem' }}>
-        {profile.profilePicture && (
-          <img
-            src={`http://localhost:5001/${profile.profilePicture}`}
-            alt={`${profile.username}'s profile`}
-            style={{
-              width: '150px',
-              height: '150px',
-              objectFit: 'cover',
-              borderRadius: '50%',
-              marginRight: '1rem'
-            }}
-          />
-        )}
+        <img
+          src={
+            profile.profilePicture
+              ? `http://localhost:5001/${profile.profilePicture}`
+              : '/placeholderpfp.png'
+          }
+          alt={`${profile.username}'s profile`}
+          style={{
+            width: '150px',
+            height: '150px',
+            objectFit: 'cover',
+            borderRadius: '50%',
+            marginRight: '1rem'
+          }}
+        />
         <h1>{profile.username}'s Profile</h1>
       </div>
-      
       <p><strong>Email:</strong> {profile.email}</p>
       {profile.bio && <p><strong>Bio:</strong> {profile.bio}</p>}
       
@@ -74,57 +75,57 @@ const ProfilePage = () => {
       
       <h2>Posts by {profile.username}</h2>
       {posts.length === 0 ? (
-  <p>No posts available.</p>
-) : (
-  posts.map((post) => (
-    <Link
-      to={`/post/${post._id}`}
-      key={post._id}
-      style={{ textDecoration: 'none', color: 'inherit' }}
-    >
-      <div
-        style={{
-          border: '1px solid #ccc',
-          padding: '1rem',
-          marginBottom: '1rem',
-          borderRadius: '4px',
-          cursor: 'pointer'
-        }}
-      >
-        <div style={{ display: 'flex', alignItems: 'center', marginBottom: '0.5rem' }}>
-          {profile.profilePicture && (
-            <img
-              src={`http://localhost:5001/${profile.profilePicture}`}
-              alt={`${profile.username}'s profile`}
+        <p>No posts available.</p>
+      ) : (
+        posts.map((post) => (
+          <Link
+            to={`/post/${post._id}`}
+            key={post._id}
+            style={{ textDecoration: 'none', color: 'inherit' }}
+          >
+            <div
               style={{
-                width: '40px',
-                height: '40px',
-                borderRadius: '50%',
-                objectFit: 'cover',
-                marginRight: '0.5rem'
+                border: '1px solid #ccc',
+                padding: '1rem',
+                marginBottom: '1rem',
+                borderRadius: '4px',
+                cursor: 'pointer'
               }}
-            />
-          )}
-          <span style={{ fontWeight: 'bold' }}>{profile.username}</span>
-        </div>
-        <h3>{post.title}</h3>
-        <p>
-          {post.content.length > 100
-            ? post.content.substring(0, 100) + '...'
-            : post.content}
-        </p>
-        <p>
-          <strong>Date:</strong> {new Date(post.createdAt).toLocaleString()}
-        </p>
-        <p>
-          <strong>Category:</strong> {post.category}
-        </p>
-      </div>
-    </Link>
-  ))
-)}
-
-
+            >
+              <div style={{ display: 'flex', alignItems: 'center', marginBottom: '0.5rem' }}>
+                <img
+                  src={
+                    profile.profilePicture
+                      ? `http://localhost:5001/${profile.profilePicture}`
+                      : '/placeholderpfp.png'
+                  }
+                  alt={`${profile.username}'s profile`}
+                  style={{
+                    width: '40px',
+                    height: '40px',
+                    borderRadius: '50%',
+                    objectFit: 'cover',
+                    marginRight: '0.5rem'
+                  }}
+                />
+                <span style={{ fontWeight: 'bold' }}>{profile.username}</span>
+              </div>
+              <h3>{post.title}</h3>
+              <p>
+                {post.content.length > 100
+                  ? post.content.substring(0, 100) + '...'
+                  : post.content}
+              </p>
+              <p>
+                <strong>Date:</strong> {new Date(post.createdAt).toLocaleString()}
+              </p>
+              <p>
+                <strong>Category:</strong> {post.category}
+              </p>
+            </div>
+          </Link>
+        ))
+      )}
     </div>
   );
 };
