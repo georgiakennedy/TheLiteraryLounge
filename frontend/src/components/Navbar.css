@@ -1,34 +1,80 @@
+.navbar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background-color: #fff;
+  padding: 0.5rem 1rem;
+  font-family: 'Istok Web', sans-serif;
+}
+
+.navbar-logo img {
+  height: 40px;
+  transition: height 0.3s;
+}
+
+.navbar-links {
+  display: flex;
+  gap: 1rem;
+  align-items: center;
+}
+
 .nav-link {
-    color: grey;
-    text-decoration: none;
-    font-weight: bold;
-    font-size: 16px;
-    transition: transform 0.2s, color 0.2s;
-  }
-  
-  .nav-link:hover:not(.active) {
-    transform: translateY(-3px);
-    color: rgb(255, 102, 196);
-  }
-  
-  .nav-link.active {
-    border-bottom: 3px solid rgb(255, 102, 196);
-    padding-bottom: 5px;
-    color: grey;
+  text-decoration: none;
+  color: #333;
+  font-weight: bold;
+  font-size: 1rem;
+  padding-bottom: 4px;
+  transition: transform 0.3s, color 0.3s;
+}
+
+.nav-link:not(.active):hover {
+  color: rgb(255,102,196);
+  transform: translateY(-2px);
+}
+
+.nav-link.active {
+  border-bottom: 2px solid rgb(255,102,196);
+  color: rgb(255,102,196);
+}
+
+.nav-button {
+  background: none;
+  border: none;
+  font-weight: bold;
+  cursor: pointer;
+  color: #333;
+  font-size: 1rem;
+  transition: color 0.3s;
+}
+
+.nav-button:hover {
+  color: rgb(255,102,196);
+}
+
+@media (min-width: 600px) {
+  .nav-link {
+    font-size: 1.2rem;
   }
   
   .nav-button {
-    background: none;
-    border: none;
-    color: grey;
-    font-weight: bold;
-    font-size: 16px;
-    cursor: pointer;
-    transition: transform 0.2s, color 0.2s;
+    font-size: 1.2rem;
   }
   
-  .nav-button:hover {
-    transform: translateY(-3px);
-    color: rgb(255, 102, 196);
+  .navbar-logo img {
+    height: 50px;
+  }
+}
+
+@media (min-width: 1024px) {
+  .nav-link {
+    font-size: 1.5rem;
   }
   
+  .nav-button {
+    font-size: 1.5rem;
+  }
+  
+  .navbar-logo img {
+    height: 60px;
+  }
+}

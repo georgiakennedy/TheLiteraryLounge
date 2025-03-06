@@ -7,37 +7,23 @@
   min-height: 100vh;
 }
 
-.couch-container {
-  text-align: center;
-  margin-top: 60px; 
-  margin-bottom: -350px; 
-  position: relative;
-  z-index: 1;
-}
-
-.couch-container img {
-  width: 60%;
-  max-width: 200px;
-  height: auto;
-}
-
-
 .content-container {
   background-color: #fff;
-  margin: 33vh auto 24px auto;
+  margin: 5vh auto 24px auto;
   padding: 1rem;
   border-radius: 8px;
   width: 90%;
   max-width: 1200px;
-  min-height: calc(100vh - 33vh - 24px);
+  min-height: calc(100vh - 5vh - 24px);
   position: relative;
   z-index: 2;
 }
 
 @media (min-width: 768px) {
   .content-container {
-    margin: 33vh auto 24px auto;
+    margin: 10vh auto 24px auto;
     width: 90%;
+    min-height: calc(100vh - 10vh - 24px);
   }
 }
 

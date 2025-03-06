@@ -1,5 +1,5 @@
 import React, { useContext } from 'react';
-import { NavLink, useNavigate } from 'react-router-dom';
+import { NavLink, useNavigate, useLocation } from 'react-router-dom';
 import { AuthContext } from '../context/AuthContext';
 import logo from '../assets/logov1.png';
 import './Navbar.css';
@@ -7,6 +7,10 @@ import './Navbar.css';
 const Navbar = () => {
   const { user, logout } = useContext(AuthContext);
   const navigate = useNavigate();
+  const location = useLocation();
+
+  const authLinkLabel = location.pathname === '/register' ? 'Sign Up' : 'Login';
+  const authLinkTo = location.pathname === '/register' ? '/register' : '/login';
 
   const handleLogout = () => {
     logout();
@@ -14,23 +18,13 @@ const Navbar = () => {
   };
 
   return (
-    <nav
-      className="navbar"
-      style={{
-        display: 'flex',
-        justifyContent: 'space-between',
-        alignItems: 'center',
-        backgroundColor: '#fff',
-        padding: '0.5rem 1rem',
-        fontFamily: 'Istok Web, sans-serif'
-      }}
-    >
+    <nav className="navbar">
       <div className="navbar-logo">
         <NavLink to="/">
-          <img src={logo} alt="Logo" style={{ height: '40px' }} />
+          <img src={logo} alt="Logo" />
         </NavLink>
       </div>
-      <div className="navbar-links" style={{ display: 'flex', gap: '1rem', alignItems: 'center' }}>
+      <div className="navbar-links">
         <NavLink to="/" className="nav-link">
           Home
         </NavLink>
@@ -47,8 +41,8 @@ const Navbar = () => {
             </button>
           </>
         ) : (
-          <NavLink to="/login" className="nav-link">
-            Login
+          <NavLink to={authLinkTo} className="nav-link">
+            {authLinkLabel}
           </NavLink>
         )}
       </div>
