@@ -7,18 +7,6 @@
   min-height: 100vh;
 }
 
-.content-container {
-  background-color: #fff;
-  margin: 5vh auto 24px auto;
-  padding: 1rem;
-  border-radius: 8px;
-  width: 90%;
-  max-width: 1200px;
-  min-height: calc(100vh - 5vh - 24px);
-  position: relative;
-  z-index: 2;
-}
-
 @media (min-width: 768px) {
   .content-container {
     margin: 10vh auto 24px auto;

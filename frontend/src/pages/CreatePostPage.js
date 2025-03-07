@@ -108,8 +108,8 @@ const styles = {
   },
   whiteContainer: {
     backgroundColor: '#fff',
-    padding: '2rem',
-    borderRadius: '8px',
+    padding: '1.5rem',
+    borderRadius: '0px',
     width: '90%',
     maxWidth: '900px',
     textAlign: 'center',

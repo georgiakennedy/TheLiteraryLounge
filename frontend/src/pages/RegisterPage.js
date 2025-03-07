@@ -96,7 +96,7 @@ const styles = {
   whiteContainer: {
     backgroundColor: '#fff',
     padding: '2rem',
-    borderRadius: '8px',
+    borderRadius: '0px',
     width: '90%',
     maxWidth: '400px',
     textAlign: 'center'
