@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import api from '../services/api';
+import '../App.css';
 
 const categories = ['All', 'tips & tricks', 'discussions', 'get inspired', 'resources', 'Self promo'];
 
@@ -71,96 +72,44 @@ const HomePage = () => {
   };
 
   return (
-    <div style={{
-      backgroundColor: '#fff',
-      padding: '0rem',
-      minHeight: '100vh' }}>
-      <div style={{ 
-        padding: '1rem',
-        fontFamily: 'Istok Web, sans-serif'
-        }}>
-        <div
-          style={{
-            background: 'linear-gradient(90deg, rgba(255,235,128,1) 0%, rgba(255,198,11,1) 25%, rgba(255,123,180,1) 65%, rgba(255,87,159,1) 92%)',
-            padding: '0.7rem',
-            textAlign: 'center',
-            color: 'white',
-            fontWeight: 'bold',
-            fontSize: '2.5rem',
-            borderRadius: '0px',
-            marginBottom: '1rem'
-          }}
-        >
-          THE LITERARY LOUNGE FORUMS
-        </div>
+    <div className="pageWrapper">
+      <div className="whiteContainer large">
+        <div className="headerTitle">THE LITERARY LOUNGE FORUMS</div>
 
-        <div style={{
-          display: 'flex',
-          alignItems: 'center',
-          marginBottom: '1rem',
-          backgroundColor: '#f0f0f0',
-          borderRadius: '4px',
-          padding: '0.5rem'
-        }}>
-          <span style={{ marginRight: '0.5rem', fontSize: '1.2rem', color: '#666' }}>🔍</span>
+        <div className="searchBar">
+          <span>🔍</span>
           <input
             type="text"
             placeholder="Search posts..."
             value={searchTerm}
             onChange={(e) => setSearchTerm(e.target.value)}
-            style={{
-              border: 'none',
-              background: 'transparent',
-              outline: 'none',
-              width: '100%',
-              fontSize: '1rem',
-              color: '#333'
-            }}
           />
         </div>
 
-        <div style={{ display: 'flex', gap: '1rem' }}>
-          <div style={{ flexBasis: '15%', paddingRight: '1rem' }}>
-            <h2 style={{ 
-              color: 'black',
-              marginBottom: '0.5rem',
-              fontWeight: 'bold',
-              fontSize: '1.2rem'
-            }}>
-              Categories
-            </h2>
-            <div style={{ display: 'flex', flexDirection: 'column', gap: '0.5rem' }}>
+        <div className="contentWrapper">
+          <div className="categories">
+            <h2>Categories</h2>
+            <div className="categories-buttons">
               {categories.map((cat) => (
-                <button
-                  key={cat}
-                  onClick={() => setSelectedCategory(cat)}
-                  style={{
-                    backgroundColor: '#e0e0e0',
-                    border: 'none',
-                    borderRadius: '20px',
-                    padding: '0.5rem 1rem',
-                    color: '#555',
-                    cursor: 'pointer',
-                    fontWeight: 'bold'
-                  }}
-                >
+                <button key={cat} onClick={() => setSelectedCategory(cat)}>
                   {cat}
                 </button>
               ))}
             </div>
+            <div className="categories-dropdown">
+              <select
+                value={selectedCategory}
+                onChange={(e) => setSelectedCategory(e.target.value)}
+              >
+                {categories.map((cat) => (
+                  <option key={cat} value={cat}>{cat}</option>
+                ))}
+              </select>
+            </div>
           </div>
-
-          <div style={{ width: '1px', backgroundColor: '#ccc' }}></div>
-
-          <div style={{ flexBasis: '85%', paddingLeft: '1rem' }}>
-            <h2 style={{ 
-              color: 'black', 
-              fontWeight: '2000', 
-              marginBottom: '1rem',
-              fontSize: '1.8rem'
-            }}>
-              Recent Posts
-            </h2>
+          <div className="divider"></div>
+          <div className="mainContent">
+            <h2>Recent Posts</h2>
             {loading && <p>Loading posts...</p>}
             {error && <p style={{ color: 'red' }}>{error}</p>}
             {!loading && searchedPosts.length === 0 && <p>No posts available.</p>}
@@ -171,17 +120,8 @@ const HomePage = () => {
                   key={post._id}
                   style={{ textDecoration: 'none', color: 'inherit' }}
                 >
-                  <div
-                    style={{
-                      backgroundColor: '#f4f4f4',
-                      padding: '0.8rem',
-                      marginBottom: '0.8rem',
-                      borderRadius: '4px',
-                      cursor: 'pointer',
-                      position: 'relative'
-                    }}
-                  >
-                    <div style={{ display: 'flex', alignItems: 'center', marginBottom: '0.5rem', position: 'relative' }}>
+                  <div className="postCard">
+                    <div className="postHeader">
                       {post.author && (
                         <>
                           <img
@@ -191,13 +131,6 @@ const HomePage = () => {
                                 : '/placeholderpfp.png'
                             }
                             alt={`${post.author.username}'s profile`}
-                            style={{
-                              width: '40px',
-                              height: '40px',
-                              borderRadius: '50%',
-                              objectFit: 'cover',
-                              marginRight: '0.5rem'
-                            }}
                           />
                           {localStorage.getItem('token') ? (
                             <Link
@@ -216,63 +149,27 @@ const HomePage = () => {
                           )}
                         </>
                       )}
-                      <span style={{
-                        position: 'absolute',
-                        right: '1rem',
-                        top: '0.5rem',
-                        color: 'darkgrey',
-                        fontSize: '0.8rem'
-                      }}>
+                      <span className="timestamp">
                         {new Date(post.createdAt).toLocaleString()}
                       </span>
                     </div>
-
-                    <h2 style={{ fontWeight: '900', color: 'black', fontSize: '1.3rem', marginBottom: '0.2rem' }}>
-                      {post.title}
-                    </h2>
-
-                    <p style={{ fontSize: '1rem', color: '#555', marginBottom: '1rem' }}>
-                      {post.content.length > 100 ? post.content.substring(0, 100) + '...' : post.content}
+                    <h2>{post.title}</h2>
+                    <p>
+                      {post.content.length > 100
+                        ? post.content.substring(0, 100) + '...'
+                        : post.content}
                     </p>
-
-                    <div style={{
-                      display: 'flex',
-                      justifyContent: 'space-between',
-                      alignItems: 'center'
-                    }}>
-                      <div style={{
-                        backgroundColor: getBubbleColor(post.category),
-                        borderRadius: '20px',
-                        padding: '0.2rem 0.5rem',
-                        fontWeight: 'bold',
-                        color: 'black',
-                        fontSize: '0.8rem',
-                        fontFamily: 'Istok Web, sans-serif'
-                      }}>
+                    <div className="postStats">
+                      <div className="bubble" style={{ background: getBubbleColor(post.category) }}>
                         {post.category}
                       </div>
-                      <div style={{
-                        display: 'flex',
-                        alignItems: 'center',
-                        gap: '1rem',
-                        fontSize: '0.9rem',
-                        color: '#555',
-                        fontFamily: 'Istok Web, sans-serif'
-                      }}>
-                        <span style={{ display: 'flex', alignItems: 'center' }}>
-                          <img
-                            src="/heart.png"
-                            alt="Likes"
-                            style={{ width: '16px', marginRight: '0.3rem' }}
-                          />
+                      <div className="statsIcons">
+                        <span>
+                          <img src="/heart.png" alt="Likes" />
                           {post.likes}
                         </span>
-                        <span style={{ display: 'flex', alignItems: 'center' }}>
-                          <img
-                            src="/speechbubble.png"
-                            alt="Comments"
-                            style={{ width: '16px', marginRight: '0.3rem' }}
-                          />
+                        <span>
+                          <img src="/speechbubble.png" alt="Comments" />
                           {post.comments ? post.comments.length : 0}
                         </span>
                       </div>
@@ -285,24 +182,8 @@ const HomePage = () => {
         </div>
 
         {authOverlayMessage && (
-          <div style={{
-            position: 'fixed',
-            top: 0,
-            left: 0,
-            width: '100%',
-            height: '100%',
-            backgroundColor: 'rgba(0, 0, 0, 0.5)',
-            display: 'flex',
-            alignItems: 'center',
-            justifyContent: 'center',
-            zIndex: 2000
-          }}>
-            <div style={{
-              backgroundColor: '#fff',
-              padding: '2rem',
-              borderRadius: '8px',
-              textAlign: 'center'
-            }}>
+          <div className="overlay">
+            <div className="overlayContent">
               <h2>{authOverlayMessage}</h2>
             </div>
           </div>
