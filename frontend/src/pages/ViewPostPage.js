@@ -135,7 +135,7 @@ const ViewPostPage = () => {
             <img
               src={
                 post.author.profilePicture
-                  ? `http://localhost:5001/${post.author.profilePicture}`
+                  ? `https://theliterarylounge.onrender.com/uploads/${post.author.profilePicture}`
                   : '/placeholderpfp.png'
               }
               alt={`${post.author.username}'s profile`}
@@ -195,7 +195,7 @@ const ViewPostPage = () => {
                       <img
                         src={
                           comment.author.profilePicture
-                            ? `http://localhost:5001/${comment.author.profilePicture}`
+                            ? `https://theliterarylounge.onrender.com/uploads/${post.author.profilePicture}`
                             : '/placeholderpfp.png'
                         }
                         alt={`${comment.author.username}'s profile`}

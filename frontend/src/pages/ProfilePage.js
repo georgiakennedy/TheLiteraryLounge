@@ -72,7 +72,7 @@ const ProfilePage = () => {
           <img
             src={
               profile.profilePicture
-                ? `http://localhost:5001/${profile.profilePicture}`
+                ? `https://theliterarylounge.onrender.com/uploads/${profile.profilePicture}`
                 : '/placeholderpfp.png'
             }
             alt={profile.username}
@@ -105,7 +105,7 @@ const ProfilePage = () => {
                     <img
                       src={
                         profile.profilePicture
-                          ? `http://localhost:5001/${profile.profilePicture}`
+                          ? `https://theliterarylounge.onrender.com/uploads/${profile.profilePicture}`
                           : '/placeholderpfp.png'
                       }
                       alt={profile.username}

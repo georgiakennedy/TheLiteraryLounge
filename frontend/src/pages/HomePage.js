@@ -127,7 +127,7 @@ const HomePage = () => {
                           <img
                             src={
                               post.author.profilePicture
-                                ? `http://localhost:5001/${post.author.profilePicture}`
+                                ? `https://theliterarylounge.onrender.com/uploads/${post.author.profilePicture}`
                                 : '/placeholderpfp.png'
                             }
                             alt={`${post.author.username}'s profile`}
