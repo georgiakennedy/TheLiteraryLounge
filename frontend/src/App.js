@@ -13,7 +13,6 @@ import './App.css';
 function AppContent() {
   const location = useLocation();
   
-  // Define paths that are for auth pages
   const authPaths = ['/login', '/register', '/edit-profile'];
   const isAuthPage = authPaths.includes(location.pathname);
 
@@ -21,14 +20,12 @@ function AppContent() {
     <div className="background-container">
       <Navbar />
       {isAuthPage ? (
-        // For auth pages, no white container wrapper is used (or use a different style)
         <Routes>
           <Route path="/login" element={<LoginPage />} />
           <Route path="/register" element={<RegisterPage />} />
           <Route path="/edit-profile" element={<EditProfilePage />} />
         </Routes>
       ) : (
-        // For non-auth pages, wrap content in a white container
         <div className="content-container">
           <Routes>
             <Route path="/" element={<HomePage />} />
