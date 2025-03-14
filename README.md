@@ -74,4 +74,11 @@ For testing purposes, you can log in using the following account:
 
 The manual test cases for this project are documented in [this spreadsheet](https://docs.google.com/spreadsheets/d/12bB-324YXr_yZjFTtHduRqp8wv6htXJPx125ejoe9jM/edit?usp=sharing).
 
+## Project Documentation
+
+[Project Documentation here!](https://docs.google.com/document/d/1pyTYw9f08jgnhEsOoKBDOBO5EoEJMuxBsGPs0q3aKoo/edit?usp=sharing).
+
+## Trello Board
+
+[View my Trello Board here!](https://trello.com/invite/b/67a9bf2d116c01de63cd966b/ATTIf04ab1db88e991bbba4186193bafc9cc1D152C36/the-literary-lounge).
 
