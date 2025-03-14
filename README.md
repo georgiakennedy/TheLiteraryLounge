@@ -40,20 +40,36 @@ For testing purposes, you can log in using the following account:
 - HTML/CSS
 - JavaScript
 - React.js
-
 ### Backend
 - Node.js
 - Express.js
-
 ### Database
 - MongoDB
-
 ### Authentication
 - JWT
-
 ### Testing
 - Jest
-
 ### Deployment
 - Netlify (Frontend)
 - Render (Backend)
+
+
+## Dependencies
+
+### Frontend
+- **React** – Core library for building the user interface
+- **react-router-dom** – Routing for React
+- **axios** – HTTP client for API calls
+- **dotenv** (development) – Environment variables (optional for local dev)
+- **jest** (development) – Testing framework (if used in frontend tests)
+### Backend
+- **express** – Web framework for Node.js
+- **mongoose** – MongoDB object modeling
+- **cors** – Cross-Origin Resource Sharing
+- **bcrypt** – Password hashing
+- **jsonwebtoken** – JWT authentication
+- **dotenv** – Environment variables
+- **multer** – File uploading middleware (for profile pictures)
+
+
+
