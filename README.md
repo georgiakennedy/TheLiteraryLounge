@@ -76,9 +76,9 @@ The manual test cases for this project are documented in [this spreadsheet](http
 
 ## Project Documentation
 
-[Project Documentation here!](https://docs.google.com/document/d/1pyTYw9f08jgnhEsOoKBDOBO5EoEJMuxBsGPs0q3aKoo/edit?usp=sharing).
+[Project Documentation here!](https://docs.google.com/document/d/1pyTYw9f08jgnhEsOoKBDOBO5EoEJMuxBsGPs0q3aKoo/edit?usp=sharing)
 
 ## Trello Board
 
-[View my Trello Board here!](https://trello.com/invite/b/67a9bf2d116c01de63cd966b/ATTIf04ab1db88e991bbba4186193bafc9cc1D152C36/the-literary-lounge).
+[View my Trello Board here!](https://trello.com/invite/b/67a9bf2d116c01de63cd966b/ATTIf04ab1db88e991bbba4186193bafc9cc1D152C36/the-literary-lounge)
 
