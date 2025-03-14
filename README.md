@@ -71,5 +71,8 @@ For testing purposes, you can log in using the following account:
 - **dotenv** – Environment variables
 - **multer** – File uploading middleware (for profile pictures)
 
+## Manual Testing
+
+The manual test cases for this project are documented in [this spreadsheet](https://docs.google.com/spreadsheets/d/12bB-324YXr_yZjFTtHduRqp8wv6htXJPx125ejoe9jM/edit?usp=sharing).
 
 
