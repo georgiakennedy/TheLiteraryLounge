@@ -6,7 +6,6 @@ The Literary Lounge Forums is a full-stack MERN application that provides a foru
 
 **Deployed Website:**  
 [https://theeliterarylounge.netlify.app/](https://theeliterarylounge.netlify.app/)  
-*Copy URL:* `https://theeliterarylounge.netlify.app/`
 
 **Backend API:**  
 [https://theliterarylounge.onrender.com](https://theliterarylounge.onrender.com)
