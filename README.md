@@ -31,3 +31,29 @@ For testing purposes, you can log in using the following account:
 - **Username:** testusers  
 - **Email:** testusers@gmail.com  
 - **Password:** Password@123
+
+## Tech Stack
+
+- **MERN Stack** (MongoDB, Express, React, Node.js)
+
+### Frontend
+- HTML/CSS
+- JavaScript
+- React.js
+
+### Backend
+- Node.js
+- Express.js
+
+### Database
+- MongoDB
+
+### Authentication
+- JWT
+
+### Testing
+- Jest
+
+### Deployment
+- Netlify (Frontend)
+- Render (Backend)
